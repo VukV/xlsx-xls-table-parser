@@ -1,4 +1,4 @@
-# Table Parser (xlsx & xls)
+# Table Parser
 ### Ruby Metaprogramming
 
 Project for Scripting Languages course at Faculty of Computing.
