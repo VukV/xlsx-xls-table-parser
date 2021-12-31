@@ -50,3 +50,13 @@ third_column_xls = table_xls.Third
 print "treca kolona - ime: ", third_column_xls.name, "\n"
 print "treca kolona - celije: ", third_column_xls.fields, "\n"
 print "treca kolona - zbir: ", third_column_xls.sum, "\n"
+#todo col.col_name.cell
+
+table_xls_second = Table.new('../tables/table2.xls', 'Sheet1')
+puts "\n", "sabiranje:"
+table_xls+table_xls_second
+table_xls.print_table
+
+puts "\n", "oduzimanje:"
+table_xls-table_xls_second
+table_xls.print_table

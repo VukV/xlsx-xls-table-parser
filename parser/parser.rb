@@ -140,7 +140,15 @@ class Table
             raise "Dimensions are not the same!"
         end
 
-        #todo sabiranje
+        second_table = second_table.table
+        @table.each_with_index do |row, i|
+            if i == 0
+                next
+            end
+            row.each_with_index do |cell, j|
+                @table[i][j] += second_table[i][j]
+            end
+        end
 
         @columns = @columns.clear
         self.init_columns
@@ -155,7 +163,15 @@ class Table
             raise "Dimensions are not the same!"
         end
 
-        #todo oduzimanje
+        second_table = second_table.table
+        @table.each_with_index do |row, i|
+            if i == 0
+                next
+            end
+            row.each_with_index do |cell, j|
+                @table[i][j] -= second_table[i][j]
+            end
+        end
 
         @columns = @columns.clear
         self.init_columns
