@@ -25,8 +25,23 @@ class Column
 
     def make_cell_methods
         @fields.each do |cell|
-            self.define_singleton_method("#{cell}") do
-                #todo
+            self.define_singleton_method("find_#{cell}") do
+                index = -1
+                @rows.each_with_index do |row, i|
+                    if i == 0
+                        row.each_with_index do |row_cell, j|
+                            if row_cell == @name
+                                index = j
+                            end
+                        end
+                    else
+                        row.each_with_index do |row_cell, j|
+                            if row_cell == cell and j == index
+                                return row
+                            end
+                        end
+                    end
+                end
             end
         end
     end
@@ -108,6 +123,12 @@ class Table
         end
         
         @table = table_tmp.transpose
+
+        #todo: fix
+        #mapiraj ako vrednost ima samo brojeve
+            #moguce da ce morati for petljom
+        @table.reject(&:  ).map(&:to_i)
+        
     end
 
     def init_columns
