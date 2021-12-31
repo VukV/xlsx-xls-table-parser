@@ -23,11 +23,11 @@ print "druga kolona - zbir: ", third_column_xlsx.sum, "\n"
 
 table_xlsx_second = Table.new('../tables/table1.xlsx', 'Sheet1')
 puts "\n", "sabiranje:"
-table_xlsx+table_xlsx_second
+table_xlsx + table_xlsx_second
 table_xlsx.print_table
 
 puts "\n", "oduzimanje:"
-table_xlsx-table_xlsx_second
+table_xlsx - table_xlsx_second
 table_xlsx.print_table
 
 
@@ -54,9 +54,9 @@ print "treca kolona - zbir: ", third_column_xls.sum, "\n"
 
 table_xls_second = Table.new('../tables/table2.xls', 'Sheet1')
 puts "\n", "sabiranje:"
-table_xls+table_xls_second
+table_xls + table_xls_second
 table_xls.print_table
 
 puts "\n", "oduzimanje:"
-table_xls-table_xls_second
+table_xls - table_xls_second
 table_xls.print_table

@@ -2,11 +2,12 @@ require 'roo'
 require 'spreadsheet'
 
 class Column
-    attr_accessor :name, :fields
+    attr_accessor :name, :fields, :rows
 
-    def initialize(name, fields)
+    def initialize(name, fields, rows)
         @name = name
         @fields = fields
+        @rows = rows
     end
 
     def add_data(data)
@@ -20,6 +21,14 @@ class Column
         end
 
         return fields_sum
+    end
+
+    def make_cell_methods
+        @fields.each do |cell|
+            self.define_singleton_method("#{cell}") do
+                #todo
+            end
+        end
     end
 end
 
@@ -105,7 +114,7 @@ class Table
         table_columns = @table.transpose
         
         table_columns.each do |col|
-            current_column = Column.new(col[0], col[1..-1])
+            current_column = Column.new(col[0], col[1..-1], @table)
             @columns << current_column
         end
 
@@ -119,6 +128,8 @@ class Table
                     end
                 end
             end
+
+            col.make_cell_methods
         end
 
     end
