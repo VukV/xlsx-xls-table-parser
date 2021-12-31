@@ -12,7 +12,7 @@ table.row(i)
 ```
 Return element at j from row at i:
 ```ruby
-table.row(i)\[j\]
+table.row(i)[j]
 ```
 Return the column with given header name:
 ```ruby

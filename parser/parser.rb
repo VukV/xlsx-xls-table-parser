@@ -69,7 +69,7 @@ class Table
             if format == 'XLSX'
                 current_sheet = @table_file.sheet(@sheet_name)
                 column_index = @table_file.sheet(@sheet_name).first_column - 1
-                print i, column_index, current_sheet.column(column_index + i), current_sheet.formula(row, current_sheet.column(column_index + i)).to_s, "\n"
+                #print i, column_index, current_sheet.column(column_index + i), current_sheet.formula(row, current_sheet.column(column_index + i)).to_s, "\n"
                 if current_sheet.formula(row, current_sheet.column(column_index + i)).to_s.include? "TOTAL" #automatically checks for subtotal
                     puts 'usao if'
                     skip_row = true
@@ -107,7 +107,17 @@ class Table
         table_columns = @table.transpose
         
         table_columns.each do |col|
-            
+            current_column = Column.new(col[0], col[1..-1])
+            @columns << current_column
+        end
+
+    end
+
+    def [](name)
+        @columns.each do |col|
+            if col.name == name
+                return col.fields
+            end
         end
     end
 
