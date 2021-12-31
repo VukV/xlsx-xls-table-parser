@@ -40,6 +40,7 @@ class Table
             end
 
             #todo dodaj kolone
+            self.init_columns
 
         elsif path.end_with?(".xls")
             @table_file = Spreadsheet.open(path)
@@ -47,9 +48,10 @@ class Table
             for row in @table_file.worksheet(sheet_name)
                 self.make_row(row, 'XLS')
             end
+            self.fix_columns
 
-            fix_columns()
             #todo dodaj kolone
+            self.init_columns
         else
             raise "Wrong file format!"
         end
@@ -91,14 +93,22 @@ class Table
 
     def fix_columns
         table_tmp = @table.transpose
-        
-        table_tmp.each do |col|
+
+        table_tmp.delete_if do |col|
             if col.all? { |x| x == 0 }
-                table_tmp.delete(col)
+                true
             end
         end
         
         @table = table_tmp.transpose
+    end
+
+    def init_columns
+        table_columns = @table.transpose
+        
+        table_columns.each do |col|
+            
+        end
     end
 
     def each(&block)
