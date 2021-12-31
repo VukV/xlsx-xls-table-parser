@@ -38,8 +38,7 @@ class Table
             for row in @table_file.sheet(sheet_name)
                 self.make_row(row, 'XLSX')
             end
-
-            #todo dodaj kolone
+           
             self.init_columns
 
         elsif path.end_with?(".xls")
@@ -50,7 +49,6 @@ class Table
             end
             self.fix_columns
 
-            #todo dodaj kolone
             self.init_columns
         else
             raise "Wrong file format!"
@@ -111,6 +109,18 @@ class Table
             @columns << current_column
         end
 
+        @columns.each do |col|
+            col_name = col.name
+
+            self.define_singleton_method("#{col_name}") do
+                @columns.each do |column|
+                    if column.name == col_name
+                        return col
+                    end
+                end
+            end
+        end
+
     end
 
     def [](name)
@@ -119,6 +129,36 @@ class Table
                 return col.fields
             end
         end
+    end
+
+    def +(second_table)
+        if @table[0] != second_table.table[0]
+            raise "Headers are not the same!"
+        end
+
+        if @table.length != second_table.table.length
+            raise "Dimensions are not the same!"
+        end
+
+        #todo sabiranje
+
+        @columns = @columns.clear
+        self.init_columns
+    end
+
+    def -(second_table)
+        if @table[0] != second_table.table[0]
+            raise "Headers are not the same!"
+        end
+
+        if @table.length != second_table.table.length
+            raise "Dimensions are not the same!"
+        end
+
+        #todo oduzimanje
+
+        @columns = @columns.clear
+        self.init_columns
     end
 
     def each(&block)
