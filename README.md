@@ -7,7 +7,10 @@ The goal of the project is to implement a table parser, which supports both xlsx
 
 
 List of commands:
-* table.row(i) - returns row at given index
+* returns row at given index:
+```ruby
+table.row(i)
+```
 * table.row(i)\[j\] - returns element at j from row at i
 * table\["column_name"\] - returns the column with given header name
 * table\["column_name"\]\[i\] - returns element at given index from column with given header name
