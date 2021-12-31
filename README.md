@@ -16,11 +16,11 @@ table.row(i)\[j\]
 ```
 Return the column with given header name:
 ```ruby
-table\["column_name"\]
+table["column_name"]
 ```
 Return element at given index from column with given header name:
 ```ruby
-table\["column_name"\]\[i\]
+table["column_name"][i]
 ```
 Access column with given header name:
 ```ruby
@@ -34,8 +34,11 @@ Return the whole row with given cell value:
 ```ruby
 t.column_name.cell_value
 ```
-Return the sum/subtraction of two tables (values will be written in t1):
+Return the sum of two tables (values will be written in t1):
 ```ruby
 t1+t2
+```
+Return the subtraction of two tables (values will be written in t1):
+```ruby
 t1-t2
 ```
