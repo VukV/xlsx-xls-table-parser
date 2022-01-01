@@ -2,12 +2,12 @@ require 'roo'
 require 'spreadsheet'
 
 class Column
-    attr_accessor :name, :fields, :rows
+    attr_accessor :name, :fields, :table
 
-    def initialize(name, fields, rows)
+    def initialize(name, fields, table)
         @name = name
         @fields = fields
-        @rows = rows
+        @table = table
     end
 
     def add_data(data)
@@ -27,7 +27,7 @@ class Column
         @fields.each do |cell|
             self.define_singleton_method("find_#{cell}") do
                 index = -1
-                @rows.each_with_index do |row, i|
+                @table.table.each_with_index do |row, i|
                     if i == 0
                         row.each_with_index do |row_cell, j|
                             if row_cell == @name
@@ -124,18 +124,20 @@ class Table
         
         @table = table_tmp.transpose
 
-        #todo: fix
-        #mapiraj ako vrednost ima samo brojeve
-            #moguce da ce morati for petljom
-        @table.reject(&:  ).map(&:to_i)
-        
+        @table.each_with_index do |row, i|
+            row.each_with_index do |cell, j|                
+                if cell !~ /\D/
+                    @table[i][j] = cell.round
+                end
+            end
+        end
     end
 
     def init_columns
         table_columns = @table.transpose
         
         table_columns.each do |col|
-            current_column = Column.new(col[0], col[1..-1], @table)
+            current_column = Column.new(col[0], col[1..-1], self)
             @columns << current_column
         end
 
