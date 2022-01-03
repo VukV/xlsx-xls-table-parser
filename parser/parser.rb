@@ -58,9 +58,25 @@ class Table
 
         if path.end_with?(".xlsx")
             @table_file = Roo::Spreadsheet.open(path, {:expand_merged_ranges => true})
-            @table_file = Roo::Excelx.new(path)
+            
+            counter = 0;
+            rows_to_remove = Array.new
+            
+            @table_file.sheet(sheet_name).each_row_streaming do |row|
+                row_formulas = row.map {|cell| cell}
 
-            for row in @table_file.sheet(sheet_name)
+                if row_formulas.to_s.include? "@formula=\"SUBTOTAL" or row_formulas.to_s.include? "@formula=\"TOTAL"
+                    rows_to_remove << counter
+                end
+
+                counter += 1                
+            end
+
+            @table_file.sheet(sheet_name).each_with_index do |row, i|
+                if rows_to_remove.include? i
+                    next
+                end
+                
                 self.make_row(row, 'XLSX')
             end
            
@@ -72,8 +88,8 @@ class Table
             for row in @table_file.worksheet(sheet_name)
                 self.make_row(row, 'XLS')
             end
+            
             self.fix_columns
-
             self.init_columns
         else
             raise "Wrong file format!"
@@ -87,18 +103,7 @@ class Table
 
         skip_row = false
         row.each_with_index do |row_data, i|
-            
-            #TODO SREDI BUG
-            if format == 'XLSX'
-                current_sheet = @table_file.sheet(@sheet_name)
-                column_index = @table_file.sheet(@sheet_name).first_column
-                #print i, column_index + i, row, current_sheet.column(column_index + i), "FORMULA: ", current_sheet.formula(row, current_sheet.column(column_index + i)), "\n"
-                if current_sheet.formula(row, current_sheet.column(column_index + i)).to_s.include? "TOTAL"
-                    puts 'usao if'
-                    skip_row = true
-                end
-
-            elsif format == 'XLS'
+            if format == 'XLS'
                 if row_data.to_s.include? "Formula"
                     skip_row = true
                 end
