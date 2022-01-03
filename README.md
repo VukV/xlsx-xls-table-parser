@@ -36,9 +36,9 @@ t.column_name.cell_value
 ```
 Return the sum of two tables (values will be written in t1):
 ```ruby
-t1+t2
+t1 + t2
 ```
 Return the subtraction of two tables (values will be written in t1):
 ```ruby
-t1-t2
+t1 - t2
 ```

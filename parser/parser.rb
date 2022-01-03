@@ -58,6 +58,7 @@ class Table
 
         if path.end_with?(".xlsx")
             @table_file = Roo::Spreadsheet.open(path, {:expand_merged_ranges => true})
+            @table_file = Roo::Excelx.new(path)
 
             for row in @table_file.sheet(sheet_name)
                 self.make_row(row, 'XLSX')
@@ -90,9 +91,9 @@ class Table
             #TODO SREDI BUG
             if format == 'XLSX'
                 current_sheet = @table_file.sheet(@sheet_name)
-                column_index = @table_file.sheet(@sheet_name).first_column - 1
-                #print i, column_index, current_sheet.column(column_index + i), current_sheet.formula(row, current_sheet.column(column_index + i)).to_s, "\n"
-                if current_sheet.formula(row, current_sheet.column(column_index + i)).to_s.include? "TOTAL" #automatically checks for subtotal
+                column_index = @table_file.sheet(@sheet_name).first_column
+                #print i, column_index + i, row, current_sheet.column(column_index + i), "FORMULA: ", current_sheet.formula(row, current_sheet.column(column_index + i)), "\n"
+                if current_sheet.formula(row, current_sheet.column(column_index + i)).to_s.include? "TOTAL"
                     puts 'usao if'
                     skip_row = true
                 end
@@ -170,18 +171,12 @@ class Table
             raise "Headers are not the same!"
         end
 
-        if @table.length != second_table.table.length
-            raise "Dimensions are not the same!"
-        end
-
         second_table = second_table.table
-        @table.each_with_index do |row, i|
+        second_table.each_with_index do |row, i|
             if i == 0
                 next
             end
-            row.each_with_index do |cell, j|
-                @table[i][j] += second_table[i][j]
-            end
+            @table << row
         end
 
         @columns = @columns.clear
@@ -193,17 +188,16 @@ class Table
             raise "Headers are not the same!"
         end
 
-        if @table.length != second_table.table.length
-            raise "Dimensions are not the same!"
-        end
-
         second_table = second_table.table
-        @table.each_with_index do |row, i|
+        second_table.each_with_index do |row, i|
             if i == 0
                 next
             end
-            row.each_with_index do |cell, j|
-                @table[i][j] -= second_table[i][j]
+            
+            @table.delete_if do |table_row|
+                if table_row == row
+                    true
+                end
             end
         end
 

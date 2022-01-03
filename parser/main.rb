@@ -21,7 +21,7 @@ print "druga kolona - celije: ", second_column_xlsx.fields, "\n"
 print "druga kolona - zbir: ", second_column_xlsx.sum, "\n"
 print "druga kolona - red sa 25: ", second_column_xlsx.find_25, "\n"
 
-table_xlsx_second = Table.new('../tables/table1.xlsx', 'Sheet1')
+table_xlsx_second = Table.new('../tables/table_operations.xlsx', 'Sheet1')
 puts "\n", "sabiranje:"
 table_xlsx + table_xlsx_second
 table_xlsx.print_table
@@ -52,7 +52,7 @@ print "treca kolona - celije: ", third_column_xls.fields, "\n"
 print "treca kolona - zbir: ", third_column_xls.sum, "\n"
 print "treca kolona - red sa 3: ", third_column_xls.find_3, "\n"
 
-table_xls_second = Table.new('../tables/table2.xls', 'Sheet1')
+table_xls_second = Table.new('../tables/table_operations.xls', 'Sheet1')
 puts "\n", "sabiranje:"
 table_xls + table_xls_second
 table_xls.print_table
